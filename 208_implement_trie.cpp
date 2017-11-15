@@ -6,12 +6,12 @@ using namespace std;
 
 class TrieNode {
     private:
-        std::array<TrieNode*,26> _links;
+        std::array<TrieNode*,26> _children;
         bool _isWord;
 
     public:
         TrieNode():_isWord(false) {
-            _links.fill(nullptr);
+            _children.fill(nullptr);
         }
 
         bool isWord() const {
@@ -23,15 +23,15 @@ class TrieNode {
         }
 
         TrieNode* operator[](char ch) const {
-            return _links[ch-'a'];
+            return _children[ch-'a'];
         }
 
-        TrieNode* getLink(char ch) const {
-            return _links[ch-'a'];
+        TrieNode* getChild(char ch) const {
+            return _children[ch-'a'];
         }
 
-        void setLink(char ch, TrieNode* node) {
-            _links[ch-'a'] = node;
+        void setChild(char ch, TrieNode* node) {
+            _children[ch-'a'] = node;
         }
 };
 
@@ -53,19 +53,22 @@ class Trie {
 
             auto node = _root;
             for (auto ch:word) {
-                TrieNode* link = node->getLink(ch);
-                if (link == nullptr) {
-                    node->setLink(ch, new TrieNode());
+                //TrieNode* next = node->getChild(ch);
+                TrieNode* next = (*node)[ch];
+                if (next == nullptr) {
+                    next = new TrieNode();
+                    node->setChild(ch, next);
                 }
-                node = node->getLink(ch);
+                node = next;
             }
             node->setWord();
         }
 
-        TrieNode* searchStr(const std::string& str) {
+        TrieNode* searchPrefix(const std::string& prefix) {
             auto node = _root;
-            for (auto ch:str) {
-                TrieNode* next = node->getLink(ch);
+            for (auto ch:prefix) {
+                //TrieNode* next = node->getChild(ch);
+                TrieNode* next = (*node)[ch];
                 if (next == nullptr) {
                     return nullptr;
                 }
@@ -76,13 +79,13 @@ class Trie {
 
         /** Returns if the word is in the trie. */
         bool search(string word) {
-            auto lastNode = searchStr(word);
+            auto lastNode = searchPrefix(word);
             return lastNode != nullptr && lastNode->isWord();
         }
 
         /** Returns if there is any word in the trie that starts with the given prefix. */
         bool startsWith(string prefix) {
-            auto lastNode = searchStr(prefix); 
+            auto lastNode = searchPrefix(prefix); 
             return lastNode != nullptr;
         }
 };
