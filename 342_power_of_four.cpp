@@ -1,6 +1,8 @@
 #include <climits>
 #include <assert.h>
 
+const unsigned NUM_BITS_IN_INT = 8*sizeof(int);
+
 class Solution {
 public:
     bool isPowerOfFour(int num) {
@@ -8,7 +10,7 @@ public:
         if (num == 1) return true;
         if (num%2) return false;
         unsigned powerOfFour = 1;
-        for (unsigned i = 0; i < 8*sizeof(int); i++) {
+        for (unsigned i = 0; i < NUM_BITS_IN_INT/2; i++) {
             if (num == powerOfFour) {
                 return true;
             }
