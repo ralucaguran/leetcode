@@ -2,9 +2,8 @@ import string
 import itertools
 
 
-class Codec:
-    
-    ALNUM_COMBI = itertools.combinations(string.digits + string.ascii_letters, 6)
+class Codec: 
+    ALNUM_COMBI = itertools.combinations_with_replacement(string.digits + string.ascii_letters, 6)
     long_2_short_urls = {}
     short_2_long_urls = {}
 
@@ -14,6 +13,10 @@ class Codec:
         :type longUrl: str
         :rtype: str
         """
+        short_url = Codec.long_2_short_urls.get(longUrl)
+        if short_url:
+            return short_url
+
         short_url = ''.join(next(Codec.ALNUM_COMBI))
         Codec.long_2_short_urls[longUrl] = short_url
         Codec.short_2_long_urls[short_url] = longUrl
