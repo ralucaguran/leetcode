@@ -15,23 +15,30 @@ struct Interval {
 class Solution {
 public:
     vector<Interval> merge(vector<Interval>& intervals) {
-        if (intervals.size() == 0) {
+        if (intervals.size() < 2) {
             return intervals;
         }
 
         auto comp = [](Interval x, Interval y) { return x.start < y.start; };
         sort(intervals.begin(), intervals.end(), comp);
 
-        int idx = 0;
-        vector<Interval> mergedIntervals;
-        do {
-            int start = intervals[idx].start;
-            int end = intervals[idx].end;
-            while (intervals[++idx].start <= end) {
+        int idx = 1;
+        int start = intervals[0].start;
+        int end = intervals[0].end;
+        vector<Interval> mergedIntervals{};
+        while (true) {
+            while (intervals[idx].start <= end) {
                 end = max(end, intervals[idx].end);
+                ++idx;
+                if (idx == intervals.size()) {
+                    mergedIntervals.push_back(Interval(start, end));
+                    return mergedIntervals;
+                }
             }
             mergedIntervals.push_back(Interval(start, end));
-        } while (idx < intervals.size());
+            start = intervals[idx].start;
+            end = intervals[idx].end;
+        }
         return mergedIntervals;
     }
 };
