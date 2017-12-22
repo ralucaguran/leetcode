@@ -31,11 +31,11 @@ public:
                 end = max(end, intervals[idx].end);
                 ++idx;
                 if (idx == intervals.size()) {
-                    mergedIntervals.push_back(Interval(start, end));
+                    mergedIntervals.emplace_back(start, end);
                     return mergedIntervals;
                 }
             }
-            mergedIntervals.push_back(Interval(start, end));
+            mergedIntervals.emplace_back(start, end);
             start = intervals[idx].start;
             end = intervals[idx].end;
         }
