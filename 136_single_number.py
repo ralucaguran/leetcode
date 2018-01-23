@@ -1,8 +1,12 @@
+class Solution(object):
+    def singleNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        return reduce(lambda x,y: x^y, nums)
 
-nums = [1, 3, 3, 7, 5, 1, 7, 14, 14]
-res = 0
-for n in nums:
-    res = res ^ n
-
-print res
+sol = Solution()
+assert(sol.singleNumber([1,2,1,3,3,4,2,5,5])==4)
+assert(sol.singleNumber([1])==1)
 
