@@ -1,6 +1,6 @@
 #include <stack>
-#include <iostream>
 #include <climits>
+#include <assert.h>
 
 class MyQueue {
     private:
@@ -61,26 +61,20 @@ class MyQueue {
 
 int main() {
     MyQueue q = MyQueue();
-    q.push(1);
-    q.push(2);
-    q.push(3);
-    q.push(4);
-    q.push(5);
+    for (int i = 1; i < 6; i++) {
+        q.push(i);
+    }
     q.pop();
-    std::cout << q.peek() << std::endl;
+    assert(q.peek() == 2);
     q.pop();
-    std::cout << q.peek() << std::endl;
+    assert(q.peek() == 3);
+    assert(!q.empty());
     q.push(7);
-    q.pop();
-    q.pop();
-    q.pop();
-    q.pop();
-    q.pop();
-    q.pop();
-    q.pop();
-    q.pop();
-    q.peek();
-    q.pop();
+    for (int i = 0; i < 7; i++) {
+        q.pop();
+    }
+    assert(q.peek() == INT_MIN);
+    assert(q.empty());
     return 0;
 }
 

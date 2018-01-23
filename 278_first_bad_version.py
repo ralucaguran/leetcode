@@ -21,6 +21,12 @@ class Solution(object):
                 left = mid + 1
         return first_bad
 
+#import bisect
+#
+#class Solution(object):
+#    def firstBadVersion(self, n):
+#        return bisect.bisect_left([isBadVersion(x) for x in range(n)],True)
+
 sol = Solution()
 assert(sol.firstBadVersion(15)==11)
 

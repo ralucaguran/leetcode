@@ -13,6 +13,12 @@ struct TreeNode {
     TreeNode *left;
     TreeNode *right;
     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+
+    ~TreeNode() {
+        delete left;
+        delete right;
+    }
+
     void add(int x) {
         if (x <= this->val) {
             if (left == nullptr) {
@@ -344,7 +350,9 @@ int main(int argc, char** argv) {
     std::vector<int> preorder = {1,2,3,4};
     std::vector<int> inorder = {3,2,4,1};
 //    sol.buildTree(preorder, inorder)->print();
-    sol.buildTree2(preorder, inorder)->print();
+    TreeNode* t2 = sol.buildTree2(preorder, inorder);
+    t2->print();
+    delete t2;
     TreeNode* bst = new TreeNode(1);
     bst->left = new TreeNode(1);
 //    bst->left->right = new TreeNode(4);
@@ -360,6 +368,9 @@ int main(int argc, char** argv) {
         cout << endl;
     }
     cout << endl;
+    delete t;
+    delete t1;
+    delete bst;
 	return 0;
 }
 
