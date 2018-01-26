@@ -4,20 +4,18 @@ class Solution(object):
         :type nums: List[int]
         :rtype: List[int]
         """
-        nums_dict = {}
-        for num in nums:
-            if nums_dict.has_key(num):
-                nums_dict[num] += 1
-            else:
-                nums_dict[num] = 1
+        length = len(nums)
+        num_presence = [0]*length
+        for n in nums:
+            num_presence[n-1] += 1
+
         duplicate,missing = -1,-1
-        for num in range(1,len(nums)+1):
-            if nums_dict.has_key(num):
-                if nums_dict[num] == 2:
-                    duplicate = num
-            else:
-                missing = num
-        return [duplicate, missing]
+        for i in range(length):
+            if num_presence[i]==0:
+                missing = i+1
+            elif num_presence[i]==2:
+                duplicate = i+1
+        return [duplicate,missing]
 
 sol = Solution()
 assert sol.findErrorNums([8,2,3,4,5,5,7,1])==[5,6]
