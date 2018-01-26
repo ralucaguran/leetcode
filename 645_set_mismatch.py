@@ -4,13 +4,19 @@ class Solution(object):
         :type nums: List[int]
         :rtype: List[int]
         """
-        nums.sort()
-        size = len(nums)
-        for idx in range(size-1):
-            if nums[idx] == nums[idx+1]:
-                break
-        duplicate = nums[idx]
-        missing = size*(size+1)/2-sum(set(nums))
+        nums_dict = {}
+        for num in nums:
+            if nums_dict.has_key(num):
+                nums_dict[num] += 1
+            else:
+                nums_dict[num] = 1
+        duplicate,missing = -1,-1
+        for num in range(1,len(nums)+1):
+            if nums_dict.has_key(num):
+                if nums_dict[num] == 2:
+                    duplicate = num
+            else:
+                missing = num
         return [duplicate, missing]
 
 sol = Solution()
