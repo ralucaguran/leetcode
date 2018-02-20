@@ -8,7 +8,8 @@ using namespace std;
 class Solution {
     public:
         string frequencySort(string s) {
-            std::unordered_map<char,unsigned> freqs;
+            std::array<unsigned,128> freqs;
+            freqs.fill(0);
             for (char ch:s) {
                 ++freqs[ch];
             }
