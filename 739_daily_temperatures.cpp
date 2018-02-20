@@ -1,4 +1,5 @@
 #include <vector>
+#include <stack>
 #include <iostream>
 
 using namespace std;
@@ -7,27 +8,42 @@ using namespace std;
 class Solution {
     public:
         vector<int> dailyTemperatures(vector<int>& temperatures) {
-            size_t size = temperatures.size();
-            std::vector<int> res(size,0);
-            if (size == 0 || size == 1) {
-                return res;
+            unsigned size = temperatures.size();
+            if (size == 0) {
+                return temperatures;
             }
-            unsigned i = 0, j = 1;
-            while (j<size) {
-                if (temperatures[j]>temperatures[i]) {
-                    res[i] = j-i;
+            if (size == 1) {
+                return std::vector<int>{0};
+            }
+
+            std::vector<int> rv(size);
+            std::stack<unsigned> tempStack;
+            tempStack.push(0);
+            unsigned i = 1;
+            while(i<size) {
+                while (i<size && temperatures[i]>temperatures[tempStack.top()]) {
+                    auto idx = tempStack.top();
+                    rv[idx] = (temperatures[i]-temperatures[idx]);
+                    tempStack.pop();
+                    tempStack.push(i);
                     ++i;
-                    j = i+1;
                 }
-                else {
-                    j++;
-                    if (j==size && i<size-1) {
-                        ++i;
-                        j = i+1;
+                auto refIdx = i-1;
+                while (i<size && temperatures[i]<=temperatures[refIdx]) {
+                    tempStack.push(i);
+                    ++i;
+                }
+                while (!tempStack.empty()) {
+                    auto idx = tempStack.top();
+                    rv[idx] = temperatures[i]-temperatures[idx];
+                    if (temperatures[i]-temperatures[idx]==0) {
+                        rv[idx]=0;
                     }
+                    tempStack.pop();
                 }
+                tempStack.push(temperatures[i]);
             }
-            return res;
+            return rv;
         }
 };
 
