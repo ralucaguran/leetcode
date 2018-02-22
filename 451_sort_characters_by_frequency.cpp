@@ -8,22 +8,21 @@ using namespace std;
 class Solution {
     public:
         string frequencySort(string s) {
-            std::array<std::pair<char,unsigned>,128> freqs{{}};
+            const unsigned char N = 128;
+            std::array<std::pair<char,unsigned>,N> freqs{{}};
+            for (unsigned char i=0; i<N; i++) {
+                freqs[i].first = i;
+            }
             for (char ch:s) {
-                freqs[ch].first = ch;
                 ++freqs[ch].second;
             }
-            std::sort(freqs.begin(), freqs.end(), [](auto& x, auto& y) { 
+            std::sort(freqs.begin(), freqs.end(), [](const auto& x, const auto& y) { 
                     return (x.second > y.second) || (x.second == y.second && x.first < y.first); 
                     });
-            std::string sortedStr;
-            for (auto it = freqs.begin(); it != freqs.end(); ++it) {
-                if (it->first) {
-                    sortedStr.append(it->second, it->first);
-                }
-                else {
-                    break;
-                }
+            std::string sortedStr{};
+            sortedStr.reserve(s.length());
+            for (auto it = freqs.begin(); it->second; ++it) {
+                sortedStr.append(it->second, it->first);
             }
             return sortedStr;
         }
